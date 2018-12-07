@@ -8,11 +8,11 @@
                 سبد خرید
             </div>
             <div class="step">
-                <div class="step-badge">3</div>
+                <div class="step-badge">2</div>
                 آدرس ارسال
             </div>
             <div class="step">
-                <div class="step-badge">2</div>
+                <div class="step-badge">3</div>
                 شیوه پرداخت
             </div>
             <div class="step">
@@ -55,8 +55,13 @@
         <tr>
             <td colspan="2" rowspan="2">
                 <div class="alert alert-info">
-                    <button data-dismiss="alert" class="close" type="button">×</button>
-                    هزینه ارسال بر اساس منطقه جغرافیایی محاسبه میشود. <a href="#">اطلاعات بیشتر</a>
+                    @foreach($shippingMethods as $shippingMethod)
+                        <div class="radio">
+                            <label><input type="radio" name="shipM">{{ $shippingMethod->name }}
+                            <span>هزینه {{ $shippingMethod->cost }} تومان</span>
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
             </td>
             <td class="stronger">هزینه ارسال :</td>
@@ -72,4 +77,11 @@
         </tr>
         </tbody>
     </table>
+@endsection
+
+@section('link')
+    <p class="right-align">
+        در مرحله بعدی شما آدرس ارسال را انتخاب خواهید کرد. &nbsp; &nbsp;
+        <a href="{{ route('basket.checkAddress') }}" class="btn btn-primary higher bold">ادامه</a>
+    </p>
 @endsection

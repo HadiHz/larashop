@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function login()
+    {
+        $pageTitle = 'ورود به سایت';
+        return view('frontend.login.login' , compact('pageTitle'));
+    }
+
     public function doRegister(Request $request)
     {
 //        $this->validate($request,[],[]);
@@ -32,7 +38,7 @@ class UserController extends Controller
         $remember = $request->has('remember');
         if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $remember)) {
             $user = Auth::user();
-            return redirect('/');
+            return redirect()->intended('/');
         }
         return redirect()->back()->with('loginError', 'ایمیل یا کلمه عبور اشتباه می باشد');
     }

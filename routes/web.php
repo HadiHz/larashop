@@ -54,6 +54,8 @@ Route::group(['prefix' => 'admin' , 'namespace' => 'Admin'] , function (){
 Route::group(['namespace' => 'Frontend'] , function (){
     Route::get('/' , 'HomeController@index')->name('home');
 
+
+    Route::get('/login' , 'UserController@login')->name('login');
     Route::post('/register' , 'UserController@doRegister')->name('register');
     Route::post('/doLogin' , 'UserController@doLogin')->name('doLogin');
     Route::get('account/logout', 'UserController@logout')->name('logout');
@@ -69,5 +71,9 @@ Route::group(['namespace' => 'Frontend'] , function (){
 
 
     Route::get('/basket/review'  , 'BasketController@review')->name('basket.review');
+    Route::get('/basket/check-address'  , 'BasketController@checkAddress')->name('basket.checkAddress')->middleware('auth');
+    Route::post('/basket/check-address'  , 'BasketController@doCheckAddress')->name('basket.checkAddress')->middleware('auth');
+    Route::get('/basket/how-to-pay'  , 'BasketController@howToPay')->name('basket.howToPay')->middleware('auth');
+    Route::get('/basket/confirm-and-pay'  , 'BasketController@confirmAndPay')->name('basket.confirmAndPay')->middleware('auth');
 
 });

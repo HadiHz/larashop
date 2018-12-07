@@ -108,10 +108,8 @@
 
                             <hr />
 
-                            <p class="right-align">
-                                در مرحله بعدی شما آدرس ارسال را انتخاب خواهید کرد. &nbsp; &nbsp;
-                                <a href="checkout-step-2.html" class="btn btn-primary higher bold">ادامه</a>
-                            </p>
+                            @yield('link')
+
                         </div>
                     </div>
                 </div>

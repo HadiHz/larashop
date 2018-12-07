@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Product;
+use App\Models\ShippingMethod;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use phpDocumentor\Reflection\Types\Compound;
 
 class BasketController extends Controller
 {
@@ -53,7 +55,46 @@ class BasketController extends Controller
 
     public function review(Request $request)
     {
-        return view('frontend.basket.review');
+        $shippingMethods = ShippingMethod::all();
+        $pageTitle = 'بازبینی سبد خرید';
+        return view('frontend.basket.review' , compact('shippingMethods' , 'pageTitle'));
+    }
+
+    public function checkAddress(Request $request)
+    {
+
+        $pageTitle = 'آدرس ارسال';
+        return view('frontend.basket.checkAddress' , compact('pageTitle'));
+    }
+
+    public function doCheckAddress(Request $request)
+    {
+        $data = $request->validate([
+            'phoneNumber' => 'required|numeric',
+            'address' => 'required',
+            'postal_code' => 'required|numeric',
+        ]);
+
+        auth()->user()->update($data);
+        auth()->user()->save();
+
+        return redirect()->route('basket.howToPay');
+
+
+    }
+
+
+    public function howToPay()
+    {
+        $pageTitle = 'شیوه ی پرداخت';
+        return view('frontend.basket.howtopay' , compact('pageTitle'));
+    }
+
+
+    public function confirmAndPay()
+    {
+        $pageTitle = 'تایید و پرداخت';
+        return view('frontend.basket.confirmAndPay' , compact('pageTitle'));
     }
 
     public function remove( $product_id ) {

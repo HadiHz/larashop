@@ -19,7 +19,8 @@ class CreatePaymentsTable extends Migration
             $table->smallInteger('status');
             $table->string('gateway_name');
             $table->string('reserve_number');
-            $table->string('reference_number');
+            $table->string('reference_number')->nullable();
+            $table->string('reference_id')->nullable();
             $table->integer('amount');
             $table->timestamps();
         });

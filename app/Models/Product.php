@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+
+use App\Filters\ProductFilter;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Product extends Model
 {
@@ -18,6 +21,12 @@ class Product extends Model
     public function categories()
     {
         return $this->morphToMany(Category::class , 'categorizable','categorizables','categorizable_id' , 'category_id');
+    }
+
+
+    public function scopeFilter(Builder $builder, $request)
+    {
+        return (new ProductFilter($request))->filter($builder);
     }
 
 

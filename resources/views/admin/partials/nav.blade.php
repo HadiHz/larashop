@@ -8,9 +8,9 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">کاربران
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">لیست کاربران</a></li>
+                    <li><a href="{{ route('admin.user.list') }}">لیست کاربران</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#">ثبت کاربر جدید</a></li>
+                    <li><a href="{{ route('admin.user.create') }}">ثبت کاربر جدید</a></li>
                 </ul>
             </li>
             <li class="dropdown">
@@ -40,12 +40,21 @@
             </li>
 
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">روش های هزینه ی پست
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">روش های پست
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="{{ route('admin.shippingMethods.list') }}">لیست روش ها</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="{{ route('admin.shippingMethods.create') }}">ثبت روش جدید</a></li>
+                </ul>
+            </li>
+
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">هماهنگی با نسخه دسکتاپ
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ route('admin.sync.index') }}">sync</a></li>
                 </ul>
             </li>
         </ul>

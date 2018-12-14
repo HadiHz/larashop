@@ -11,9 +11,9 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $categories = Category::all()->groupBy('parent_id');
-        return $categories;
-        dd($categories);
+//        $categories = Category::all()->groupBy('parent_id');
+//        return $categories;
+//        dd($categories);
         return view('admin.category.list' , compact('categories'))->with('panel_title','لیست دسته بندی ها');
     }
 
@@ -83,7 +83,13 @@ class CategoryController extends Controller
     }
 
     public function remove( Request $request, $category_id ) {
-        $removeResult = Category::destroy([$category_id]);
+        $category = Category::find($category_id);
+
+        $removeResult = $category->delete();
+
+        if ($removeResult){
+            $category->products()->sync([]);
+        }
 
         return redirect()->route('admin.categories.list')->with('success','عملیات با موفقیت انجام شد.');
 

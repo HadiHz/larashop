@@ -24,6 +24,8 @@
 @endsection
 
 @section('content')
+    <form action="{{ route('basket.review') }}" method="post">
+        {{ csrf_field() }}
     <table class="table table-items">
         <thead>
         <tr>
@@ -40,12 +42,13 @@
         <?php $items = \App\Utility\Basket::items(); ?>
         @foreach($items as $item)
             <tr>
-                <td class="image"><img src="{{ $item['image_path'] }}" alt="" width="124" height="124"/>
+                <td class="image"><img  src="{{ $item['image_path'] }}" alt="" width="124" height="124"/>
                 </td>
-                <td class="desc">{{ $item['name'] }}<a title="Remove Item" class="icon-remove-sign" href="#"></a>
+                <td class="desc">{{ $item['name'] }}<a data-pid="{{ $item['id'] }}" title="Remove Item" class="remove_item" href="#"><span class="fa fa-remove"></span></a>
                 </td>
                 <td class="qty">
-                    <input type="text" class="tiny-size" value="{{ $item['count'] }}"/>
+                    <input type="text" name="count[]" class="tiny-size" value="{{ $item['count'] }}"/>
+                    <input type="hidden" name="ids[]" class="tiny-size" value="{{ $item['id'] }}"/>
                 </td>
                 <td class="price">
                     {{ $item['price'] }} تومان
@@ -57,22 +60,24 @@
                 <div class="alert alert-info">
                     @foreach($shippingMethods as $shippingMethod)
                         <div class="radio">
-                            <label><input type="radio" name="shipM">{{ $shippingMethod->name }}
+                            <label><input type="radio" class="shipping" name="shipM" value="{{ $shippingMethod->id }}">{{ $shippingMethod->name }}
                             <span>هزینه {{ $shippingMethod->cost }} تومان</span>
                             </label>
                         </div>
                     @endforeach
                 </div>
             </td>
-            <td class="stronger">هزینه ارسال :</td>
+            <td  class="stronger">هزینه ارسال :</td>
             <td class="stronger">
-                <div class="align-right">$4.99</div>
+                <div id="shipCost" class="align-right">{{ isset($_SESSION['shippingCost']) ? $_SESSION['shippingCost'] : '' }}</div>
             </td>
         </tr>
         <tr>
             <td class="stronger">جمع کل :</td>
-            <td class="stronger">
-                <div class="size-16 align-right">$357.81</div>
+            <td  class="stronger">
+                <?php $shippingCost = isset($_SESSION['shippingCost']) ? $_SESSION['shippingCost'] : 0;
+                $total = \App\Utility\Basket::total_price() + $shippingCost; ?>
+                <div id="total" class="size-16 align-right">{{ $total }} تومان </div>
             </td>
         </tr>
         </tbody>
@@ -82,6 +87,8 @@
 @section('link')
     <p class="right-align">
         در مرحله بعدی شما آدرس ارسال را انتخاب خواهید کرد. &nbsp; &nbsp;
-        <a href="{{ route('basket.checkAddress') }}" class="btn btn-primary higher bold">ادامه</a>
+        <button type="submit"  class="btn btn-primary higher bold">ادامه</button>
     </p>
+    </form>
+    @include('admin.partials.errors')
 @endsection

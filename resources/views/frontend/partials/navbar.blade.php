@@ -15,72 +15,13 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav" id="mainNavigation">
                             <li class="dropdown active">
-                                <a href="index.html" class="dropdown-toggle"> خانه <b class="caret"></b> </a>
-                                <ul class="dropdown-menu">
-                                    <li class="dropdown active">
-                                        <a href="index.html"><i class="icon-caret-left pull-right visible-desktop"></i>
-                                            رنگ های پوسته</a>
-                                        <ul class="dropdown-menu">
-                                            <li class="active"><a href="index.html">پوسته پیش فرض</a></li>
-                                            <li><a href="index-grass-green.html">پوسته سبز چمنی</a></li>
-                                            <li><a href="index-oil-green.html">پوسته سبز روغنی</a></li>
-                                            <li><a href="index-gray.html">پوسته خاکستری</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="index-boxed-solid.html"><i
-                                                    class="icon-caret-left pull-right visible-desktop"></i> ورژن
-                                            boxed</a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="index-boxed-solid.html">Boxed - با رنگ پس زمینه ثابت</a></li>
-                                            <li><a href="index-boxed-pattern.html">Boxed - با پس زمینه الگو</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                <a href="{{ route('home') }}" class="dropdown-toggle"> خانه </a>
                             </li>
 
-                            <li class="dropdown">
-                                <a href="shop.html" class="dropdown-toggle"> فروشگاه <b class="caret"></b> </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="shop.html">قالب بندی پیش فرض</a></li>
-                                    <li><a href="shop-no-sidebar.html">تمام صفحه</a></li>
-                                    <li><a href="product.html">محصول تکی</a></li>
-                                    <li><a href="shop-search.html">نتایج جستجو</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="blog.html" class="dropdown-toggle">بلاگ <b class="caret"></b> </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="blog.html">قالب بندی پیش فرض</a></li>
-                                    <li><a href="blog-single.html">تک نوشته</a></li>
-                                    <li><a href="blog-search.html">نتایج جستجو</a></li>
-                                    <li><a href="404.html">صفحه 404</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="features.html" class="dropdown-toggle">امکانات <b class="caret"></b> </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="icons.html">آیکن ها</a></li>
-                                    <li class="dropdown">
-                                        <a href="features.html" class="dropdown-toggle"><i
-                                                    class="icon-caret-left pull-right visible-desktop"></i> همه امکانات</a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="features.html#headings">سرخط ها</a></li>
-                                            <li><a href="features.html#alertBoxes">جعبه های هشدار</a></li>
-                                            <li><a href="features.html#tabs">تب ها</a></li>
-                                            <li><a href="features.html#buttons">دکمه ها</a></li>
-                                            <li><a href="features.html#toggles">تاگل ها</a></li>
-                                            <li><a href="features.html#quotes">نقل قول ها</a></li>
-                                            <li><a href="features.html#gallery">گرید های گالری</a></li>
-                                            <li><a href="features.html#code">کد</a></li>
-                                            <li><a href="features.html#columns">ستون ها</a></li>
-                                            <li><a href="features.html#maps">نقشه ها</a></li>
-                                            <li><a href="features.html#progress">نوار های پیشرفت</a></li>
-                                            <li><a href="features.html#tables">جداول</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
+
+                            @include('frontend.category.list' ,['items' => $categories['root'] ])
+
+
                             <li><a href="about-us.html">درباره ما</a></li>
                             <li><a href="contact.html">تماس با ما</a></li>
                         </ul>
@@ -101,8 +42,8 @@
                 <div class="span3">
                     <div class="cart-container" id="cartContainer">
                         <div class="cart">
-                            <p class="items">سبد خرید <span class="dark-clr">(3)</span></p>
-                            <p class="dark-clr hidden-tablet">111</p>
+                            <p class="items">سبد خرید <span class="dark-clr">({{ count(\App\Utility\Basket::items()) }})</span></p>
+                            <p class="dark-clr hidden-tablet">{{ number_format(\App\Utility\Basket::total_price()) }}</p>
                             <a href="checkout-step-1.html" class="btn btn-danger">
                                 <!-- <span class="icon icons-cart"></span> -->
                                 <i class="icon-shopping-cart"></i>
@@ -112,23 +53,23 @@
                             <?php $items = \App\Utility\Basket::items(); ?>
                             @if(isset($items))
                                 @foreach($items as $item)
-                                        <div class="item-in-cart clearfix">
-                                            <div class="image">
-                                                <img src="{{ $item['image_path'] }}" width="124" height="124"
-                                                     alt="cart item"/>
-                                            </div>
-                                            <div class="desc">
-                                                <strong><a href="{{ route('frontend.product.single' ,$item['id']) }}">{{ $item['name'] }}</a></strong>
-                                                <span class="light-clr qty">
+                                    <div class="item-in-cart clearfix">
+                                        <div class="image">
+                                            <img src="{{ $item['image_path'] }}" width="124" height="124"
+                                                 alt="cart item"/>
+                                        </div>
+                                        <div class="desc">
+                                            <strong><a href="{{ route('frontend.product.single' ,$item['id']) }}">{{ $item['name'] }}</a></strong>
+                                            <span class="light-clr qty">
                                     تعداد : {{ $item['count'] }}
-                                    &nbsp;
+                                                &nbsp;
                                     <a href="#" class="fa fa-remove" title="Remove Item"></a>
                                 </span>
-                                            </div>
-                                            <div class="price">
-                                                <strong>{{ $item['price'] }}</strong>
-                                            </div>
                                         </div>
+                                        <div class="price">
+                                            <strong>{{ $item['price'] }}</strong>
+                                        </div>
+                                    </div>
                                 @endforeach
                             @endif
 
@@ -136,21 +77,20 @@
                                 <div class="line">
                                     <div class="row-fluid">
                                         <div class="span6">هزینه ارسال :</div>
-                                        <div class="span6 align-right">$4.99</div>
+                                        <div class="span6 align-right"></div>
                                     </div>
                                 </div>
                                 <div class="line">
                                     <div class="row-fluid">
                                         <div class="span6">جمع کل :</div>
-                                        <div class="span6 align-right size-16">$357.81</div>
+                                        <div class="span6 align-right size-16">{{ \App\Utility\Basket::total_price() }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="proceed">
-                                <a href="{{ route('basket.review') }}" class="btn btn-danger pull-right bold higher">تصویه حساب
+                                <a href="{{ route('basket.review') }}" class="btn btn-danger pull-right bold higher">تصویه
+                                    حساب
                                     <i class="icon-shopping-cart"></i></a>
-                                <small>هزینه ارسال بر اساس منطقه جغرافیایی محاسبه میشود. <a href="#">اطلاعات بیشتر</a>
-                                </small>
                             </div>
                         </div>
                     </div>

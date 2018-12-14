@@ -62,19 +62,24 @@
             </td>
             <td class="stronger">هزينه ارسال :</td>
             <td class="stronger">
-                <div class="align-right">$4.99</div>
+                <div class="align-right">{{ isset($_SESSION['shippingCost']) ? $_SESSION['shippingCost'] : '' }}</div>
             </td>
         </tr>
         <tr>
             <td class="stronger">جمع کل :</td>
             <td class="stronger">
-                <div class="size-16 align-right">$357.81</div>
+                <?php $shippingCost = isset($_SESSION['shippingCost']) ? $_SESSION['shippingCost'] : 0;
+                $total = \App\Utility\Basket::total_price() + $shippingCost; ?>
+                <div class="size-16 align-right">{{ $total }} تومان</div>
             </td>
         </tr>
         </tbody>
     </table>
 
     <p class="right-align">
-        <a href="index.html" class="btn btn-primary higher bold">تاييد و پرداخت</a>
+    <form action="{{ route('payment.start') }}" method="post">
+        {{ csrf_field() }}
+        <button type="submit" class="btn btn-primary higher bold">تاييد و پرداخت</button>
+    </form>
     </p>
 @endsection

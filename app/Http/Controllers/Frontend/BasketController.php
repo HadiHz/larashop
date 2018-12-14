@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Product;
 use App\Models\ShippingMethod;
+use App\Utility\Basket;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use phpDocumentor\Reflection\Types\Compound;
@@ -53,6 +54,15 @@ class BasketController extends Controller
     }
 
 
+    public function totalPrice(Request $request)
+    {
+        $shippingCostId = $request->input('shippingCost');
+        $_SESSION['shippingCostId'] = $shippingCostId;
+        $_SESSION['shippingCost'] = ShippingMethod::find($shippingCostId)->cost;
+
+    }
+
+
     public function review(Request $request)
     {
         $shippingMethods = ShippingMethod::all();
@@ -60,8 +70,36 @@ class BasketController extends Controller
         return view('frontend.basket.review' , compact('shippingMethods' , 'pageTitle'));
     }
 
+    public function doReview(Request $request)
+    {
+
+        $request->validate([
+            'shipM' => 'required'
+        ],[
+            'shipM.required' => 'هزینه ی پستی را باید انتخاب کنید.'
+        ]);
+
+
+
+        $ids = $request->input('ids');
+        $count = $request->input('count');
+
+        for($i=0 ; $i < count($ids) ; $i++){
+           $this->update($ids[$i] , $count[$i]);
+        }
+
+        $shippingCostId = $request->input('shipM');
+        $_SESSION['shippingCostId'] = $shippingCostId;
+        $_SESSION['shippingCost'] = ShippingMethod::find($shippingCostId)->cost;
+
+        return redirect()->route('basket.checkAddress');
+    }
+
     public function checkAddress(Request $request)
     {
+
+//        dd($_SESSION['shippingCost']);
+
 
         $pageTitle = 'آدرس ارسال';
         return view('frontend.basket.checkAddress' , compact('pageTitle'));
@@ -97,12 +135,19 @@ class BasketController extends Controller
         return view('frontend.basket.confirmAndPay' , compact('pageTitle'));
     }
 
-    public function remove( $product_id ) {
-        if ( $this->exist($product_id) ) {
-            unset($_SESSION['basket']['items'][ $product_id ]);
-            return true;
+    public function remove( Request $request ) {
+
+        if ( $this->exist($request->input('product_id')) ) {
+            unset($_SESSION['basket']['items'][ $request->input('product_id') ]);
+            return [
+                'success' => true,
+                'message' => 'آیتم مورد نظر شما از سبد خرید حذف شد.'
+            ];
         }
-        return false;
+        return [
+            'success' => false,
+            'message' => 'اشکالی رخ داده است.'
+        ];
     }
 
     public function update( $product_id, $count ) {
@@ -137,20 +182,6 @@ class BasketController extends Controller
     }
 
 
-    public function total_price() {
-        if (isset($_SESSION['basket']['items'])){
-            $total_price = 0;
-            foreach ($_SESSION['basket']['items'] as $item){
-                $total_price += $item['price']* $item['count'];
-            }
-            return $total_price;
-        }
-
-//		array_reduce($_SESSION['basket']['items'] , function ($total , $item){
-//			$total += $item['price'] * $item['count'];
-//			return $total;
-//		} , 0);
-    }
 
 
 

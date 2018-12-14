@@ -1,6 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
+    @include('frontend.partials.notifications')
     <form method="post" action="{{ route('doLogin') }}">
         {{ csrf_field() }}
         <div class="control-group">

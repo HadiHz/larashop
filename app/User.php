@@ -14,7 +14,6 @@ class User extends Authenticatable
 
 
     const USER = 1;
-    const OPERATOR = 2;
     const ADMIN = 3;
 
     /**

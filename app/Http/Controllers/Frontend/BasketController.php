@@ -20,6 +20,7 @@ class BasketController extends Controller
 
     public function add( Request $request) {
 
+//        dd($request->all());
         $product_id = $request->input('product_id');
 
         $count = 1;

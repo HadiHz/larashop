@@ -24,9 +24,11 @@
                     <div class="meta">
                         <span class="tag">{{ $product->price }} تومان</span>
                         <span class="stock">
+                            @if($product->quantity_in_warehouse > 0 )
                                 <span class="btn btn-success">موجود</span>
+                            @else
                                 <span class="btn btn-danger">اتمام موجودی</span>
-                                <span class="btn btn-warning">تماس بگیرید</span>
+                            @endif
                         </span>
                     </div>
                 </div>

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 class ProductFilter extends AbstractFilter
 {
     protected $filters = [
-        'price' => PriceFilter::class
+        'gt_price' => GreaterThanPriceFilter::class,
+        'lt_price' => LowerThanPriceFilter::class
     ];
 }

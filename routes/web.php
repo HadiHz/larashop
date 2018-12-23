@@ -58,7 +58,7 @@ Route::group(['prefix' => 'admin' , 'namespace' => 'Admin' , 'middleware' => 'ad
 
     //sync
     Route::get('/sync' , 'SyncController@index')->name('admin.sync.index');
-    Route::get('/syncProducts' , 'SyncController@syncProducts')->name('admin.syncProducts');
+    Route::post('/syncProducts' , 'SyncController@syncProducts')->name('admin.syncProducts');
 
 
 
@@ -67,6 +67,8 @@ Route::group(['prefix' => 'admin' , 'namespace' => 'Admin' , 'middleware' => 'ad
 
 Route::group(['namespace' => 'Frontend'] , function (){
     Route::get('/' , 'HomeController@index')->name('home');
+
+    Route::get('/search' , 'HomeController@search')->name('search');
 
 
     Route::get('/login' , 'UserController@login')->name('login');

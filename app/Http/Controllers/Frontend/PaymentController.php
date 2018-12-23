@@ -37,6 +37,11 @@ class PaymentController extends Controller
 
         $new_order->products()->sync($productIds);
 
+        foreach ($new_order->products()->get() as $product){
+            $product->quantity_in_warehouse = $product->quantity_in_warehouse  - $productIds[$product->id]['count'];
+            $product->save();
+        }
+
 
         $_SESSION['order_id'] = $new_order->id;
 

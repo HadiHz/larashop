@@ -29,7 +29,8 @@
                         <!--  ==========  -->
                         <!--  = Search form =  -->
                         <!--  ==========  -->
-                        <form class="navbar-form pull-right" action="#" method="get">
+                        <form class="navbar-form pull-right" action="{{ route('search') }}" method="get">
+
                             <button type="submit"><span class="icon-search"></span></button>
                             <input type="text" class="span1" name="search" id="navSearchInput">
                         </form>
@@ -44,7 +45,7 @@
                         <div class="cart">
                             <p class="items">سبد خرید <span class="dark-clr">({{ count(\App\Utility\Basket::items()) }})</span></p>
                             <p class="dark-clr hidden-tablet">{{ number_format(\App\Utility\Basket::total_price()) }}</p>
-                            <a href="checkout-step-1.html" class="btn btn-danger">
+                            <a href="{{ route('basket.review') }}" class="btn btn-danger">
                                 <!-- <span class="icon icons-cart"></span> -->
                                 <i class="icon-shopping-cart"></i>
                             </a>

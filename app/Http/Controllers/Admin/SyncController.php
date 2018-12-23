@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 
-use HttpRequest;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 
@@ -18,51 +20,143 @@ class SyncController extends Controller
         return view('admin.sync.index', compact('panel_title'));
     }
 
-    public function syncProducts()
+    public function syncProducts(Request $request)
     {
 
-        $jsonUrl = "http://localhost:50586//api/myapi/change?username=hadi&password=sdfasdfsdf";
+
+//        $oldProduct = Product::find(1);
+//        $t = $oldProduct->categories()->sync([1]);
+//        dd($t);
+
+//        $t = DB::table('categorizables')->insert([
+//            'category_id' => 100,
+//            'categorizable_id' => 11,
+//            'categorizable_type' => 'App\Models\Product',
+//        ]);
+
+//        dd($t);
+
+        $valData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+//        dd($valData);
+
+        $jsonUrl = "http://localhost:28666/api/product?username=" . $valData['email'] . "&password=" . $valData['password'];
         $json = file_get_contents($jsonUrl);
         $data = json_decode($json);
 
-//        dd($data);
+//        dd($data[3]);
+
+        $flag = $data[0];
+
+        if ($flag == 1) {
+            $products = $data[1];
+            $categories = $data[2];
+            $categorizables = $data[3];
+            foreach ($products as $product) {
+                if (Product::find($product->id)) {
+                    $oldProduct = Product::find($product->id);
+                    $oldProduct->name = $product->name;
+                    $oldProduct->description = $product->description;
+                    $oldProduct->quantity_in_warehouse = $product->quantity_in_warehouse;
+                    $oldProduct->price = $product->price;
 
 
-        $url = 'http://localhost:50586//api/myapi/Post';
-        $data = array('value' => 'value1');
+                    $imgUrl = $product->image_path;
+                    $info = pathinfo($imgUrl);
+                    $contents = file_get_contents($imgUrl);
+                    $file = '/tmp/' . $info['basename'];
+                    $a = Storage::put($file, $contents);
+                    $new_file = new File(storage_path() . '/app' . $file);
 
-// use key 'http' even if you send the request to https://...
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/json",
-                'method'  => 'POST',
-                'content' => http_build_query($data),
-            ),
-        );
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
+                    $new_file->move(public_path('productPhotos'), $info['basename']);
+                    $imagePath = DIRECTORY_SEPARATOR . 'productPhotos' . DIRECTORY_SEPARATOR . $info['basename'];
 
 
+                    $oldProduct->image_path = $imagePath;
+                    $oldProduct->save();
+                    $oldProduct->touch();
+                } else {
+                    $newProductData = [
+                        'name' => $product->name,
+                        'description' => $product->description,
+                        'quantity_in_warehouse' => $product->quantity_in_warehouse,
+                        'price' => $product->price,
+                    ];
 
-        dd($result);
+                    $imgUrl = $product->image_path;
+                    $info = pathinfo($imgUrl);
+                    $contents = file_get_contents($imgUrl);
+                    $file = '/tmp/' . $info['basename'];
+                    $a = Storage::put($file, $contents);
+                    $new_file = new File(storage_path() . '/app' . $file);
+
+                    $new_file->move(public_path('productPhotos'), $info['basename']);
+                    $imagePath = DIRECTORY_SEPARATOR . 'productPhotos' . DIRECTORY_SEPARATOR . $info['basename'];
+
+                    $newProductData['image_path'] = $imagePath;
+
+                    Product::create($newProductData);
+
+                }
+            }
+
+            foreach ($categories as $category) {
+                if (Category::find($category->id)) {
+                    $oldCategory = Category::find($category->id);
+                    $oldCategory->name = $category->name;
+                    $oldCategory->parent_id = $category->parent_id;
+
+                    $oldCategory->save();
+                    $oldCategory->touch();
+                } else {
+                    $newCategoryData = [
+                        'name' => $category->name,
+                        'parent_id' => $category->parent_id,
+                    ];
+
+                    Category::create($newCategoryData);
+                }
+            }
+
+            foreach ($categorizables as $categorizable) {
+                $p = Product::find($categorizable->categorizable_id);
+                if (! $p->categories->contains($categorizable->category_id)) {
+                    $p->categories()->attach($categorizable->category_id);
+                }
+            }
+
+            return redirect()->route('admin.product.list')->with('success', 'لیست محصولات با موفقیت به روز رسانی شد.');
+
+        } else {
+            return back()->with('getError', 'ایمیل یا پسورد اشتباه است.');
+        }
+
+
+//        $url = 'http://localhost:50586//api/myapi/Post';
+//        $data = array('value' => 'value1');
+//
+//// use key 'http' even if you send the request to https://...
+//        $options = array(
+//            'http' => array(
+//                'header'  => "Content-type: application/json",
+//                'method'  => 'POST',
+//                'content' => http_build_query($data),
+//            ),
+//        );
+//        $context  = stream_context_create($options);
+//        $result = file_get_contents($url, false, $context);
+
 
 //        dd($data[0]->lastname);
-//        $imgUrl = 'http://www.fullfilm2.com/images/1544555307.jpg';
-//        $info = pathinfo($imgUrl);
-//        $contents = file_get_contents($imgUrl);
-//        $file = '/tmp/' . $info['basename'];
-//        $a = Storage::put($file, $contents);
-//        $new_file = new File(storage_path() . '/app' . $file);
-//
-//        $bb = $new_file->move(public_path('tmp'), 'aaaa.jpg');
+
 //        var_dump($file);
 //        dd($bb);
 
-
-
-
-
-        return $data;
+//
+//        return $data;
 
     }
 }

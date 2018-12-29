@@ -61,6 +61,15 @@ Route::group(['prefix' => 'admin' , 'namespace' => 'Admin' , 'middleware' => 'ad
     Route::post('/syncProducts' , 'SyncController@syncProducts')->name('admin.syncProducts');
 
 
+    //payments
+    Route::get('/payments' , 'PaymentController@index')->name('admin.payments');
+
+    //orders
+    Route::get('/orders' , 'OrderController@index')->name('admin.orders.list');
+    Route::get('/orders/{id}' , 'OrderController@details')->name('admin.orders.details');
+    Route::post('/orders/{id}' , 'OrderController@updateStatus')->name('admin.orders.details');
+
+
 
 
 });

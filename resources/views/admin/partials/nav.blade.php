@@ -26,7 +26,14 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">پرداخت ها
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">لیست پرداخت ها</a></li>
+                    <li><a href="{{ route('admin.payments') }}">لیست پرداخت ها</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">سفارش ها
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ route('admin.orders.list') }}">لیست سفارش ها</a></li>
                 </ul>
             </li>
             <li class="dropdown">

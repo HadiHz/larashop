@@ -23,7 +23,7 @@ class PaymentController extends Controller
         $total_amount = Basket::total_price() + $_SESSION['shippingCost'];
         $order_data = [
             'user_id' => $currentUserID,
-            'status' => Order::INCOMPLETE,
+            'status' => Order::NOT_PAYED,
             'total_price' => $total_amount,
             'shipping_method_id' => $_SESSION['shippingCostId'],
         ];
@@ -84,7 +84,7 @@ class PaymentController extends Controller
                 $order = Order::find($_SESSION['order_id']);
 
                 $order->update([
-                    'status' => Order::COMPLETE,
+                    'status' => Order::PAYED,
                 ]);
 
                 $payment = Payment::where( 'reserve_number', $params[ 'SaleOrderId' ] )->first();

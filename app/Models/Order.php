@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -9,8 +10,14 @@ class Order extends Model
     protected $guarded = ['id'];
 
 
-    const COMPLETE = 1;
-    const INCOMPLETE = 2;
+    const PAYED = 1;
+    const NOT_PAYED = 2;
+    const QUEUE = 3;
+    const VERIFIED = 4;
+    const PREPARING = 5;
+    const PREPARED = 6;
+    const POSTING = 7;
+    const DONE = 8;
 
     public function products()
     {
@@ -23,15 +30,38 @@ class Order extends Model
         return $this->belongsTo(ShippingMethod::class , 'shipping_method_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class , 'user_id');
+    }
+
 
     public function order_status_format()
     {
         switch ($this->attributes['status']){
-            case self::COMPLETE:
-                return 'تکمیل شده';
+            case self::PAYED:
+                return 'پرداخت شده';
                 break;
-            case self::INCOMPLETE:
-                return 'ناقص';
+            case self::NOT_PAYED:
+                return 'پرداخت نشده';
+                break;
+            case self::QUEUE:
+                return 'در صف بررسی';
+                break;
+            case self::VERIFIED:
+                return 'تایید سفارش';
+                break;
+            case self::PREPARING:
+                return 'آماده سازی سفارش';
+                break;
+            case self::PREPARED:
+                return 'خروج از مرکز پردازش';
+                break;
+            case self::POSTING:
+                return 'تحویل به پست';
+                break;
+            case self::DONE:
+                return 'تحویل مرسوله به مشتری';
                 break;
         }
     }

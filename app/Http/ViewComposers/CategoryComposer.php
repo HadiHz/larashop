@@ -19,6 +19,7 @@ class CategoryComposer
         $categories['root'] = $categories[''];
         unset($categories['']);
         $this->categoryList = $categories;
+//        dd($this->categoryList);
     }
 
     /**

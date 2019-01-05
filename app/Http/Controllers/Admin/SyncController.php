@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -80,6 +81,7 @@ class SyncController extends Controller
                     $oldProduct->touch();
                 } else {
                     $newProductData = [
+                        'id' => $product->id,
                         'name' => $product->name,
                         'description' => $product->description,
                         'quantity_in_warehouse' => $product->quantity_in_warehouse,
@@ -113,6 +115,7 @@ class SyncController extends Controller
                     $oldCategory->touch();
                 } else {
                     $newCategoryData = [
+                        'id' => $category->id,
                         'name' => $category->name,
                         'parent_id' => $category->parent_id,
                     ];
@@ -123,7 +126,8 @@ class SyncController extends Controller
 
             foreach ($categorizables as $categorizable) {
                 $p = Product::find($categorizable->categorizable_id);
-                if (! $p->categories->contains($categorizable->category_id)) {
+//                dd($p , $categorizable , $categorizables);
+                if ($p && !$p->categories->contains($categorizable->category_id)) {
                     $p->categories()->attach($categorizable->category_id);
                 }
             }
@@ -159,4 +163,37 @@ class SyncController extends Controller
 //        return $data;
 
     }
+
+
+    public function syncOrders()
+    {
+        $orders = Order::all();
+        foreach ($orders as $order) {
+            $user_id = $order->user_id;
+            $status = $order->status;
+            $total_price = $order->total_price;
+            $shipping_method_id = $order->shipping_method_id;
+            $created_at = $order->created_at->toDateString();
+            $qsrtArr = [
+                'user_id' => $user_id,
+                'status' => $status,
+                'total_price' => $total_price,
+                'shipping_method_id' => $shipping_method_id,
+                'created_at' => $created_at,
+            ];
+            $jsonUrlData = http_build_query($qsrtArr);
+
+//            dd($jsonUrlData);
+            $jsonUrl = "http://localhost:28666/api/order?".$jsonUrlData;
+//            dd($jsonUrl);
+            $json = file_get_contents($jsonUrl);
+            $data = json_decode($json);
+        }
+
+
+        return back()->with('success', 'فاکتور ها با موفقیت ارسال شد.');
+
+
+    }
+
 }

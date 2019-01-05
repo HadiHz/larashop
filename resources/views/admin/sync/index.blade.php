@@ -6,6 +6,7 @@
 
         <div class="col-xs-12 col-md-6">
             @include('admin.partials.errors')
+            @include('admin.partials.notifications')
             @if(session('getError'))
                 <div class="alert alert-danger">
                         <p>{{ session('getError') }}</p>
@@ -15,11 +16,11 @@
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="email">ایمیل ادمین :</label>
-                    <input class="form-control" name="email" id="email">
+                    <input type="email" class="form-control" name="email" id="email">
                 </div>
                 <div class="form-group">
                     <label for="password">رمز عبور ادمین :</label>
-                    <input class="form-control" name="password" id="password">
+                    <input type="password" class="form-control" name="password" id="password">
                 </div>
 
 
@@ -32,6 +33,19 @@
     </div>
 
     <hr>
+
+
+    <p>ارسال سفارش ها</p>
+
+    <form method="post" action="{{ route('admin.syncOrders') }}">
+        {{ csrf_field() }}
+
+
+        <p>
+            <button type="submit" class="btn btn-primary">ارسال</button>
+        </p>
+
+    </form>
 
 
 @endsection

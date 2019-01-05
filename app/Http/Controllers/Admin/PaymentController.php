@@ -11,7 +11,7 @@ class PaymentController extends Controller
     public function index()
     {
         $payments = Payment::orderBy('updated_at', 'DESC')->get();
-        $pageTitle = 'پرداخت ها';
-        return view('admin.payment.list' , compact('payments' , 'pageTitle'));
+        $panel_title = 'پرداخت ها';
+        return view('admin.payment.list' , compact('payments' , 'panel_title'));
     }
 }

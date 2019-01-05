@@ -18,7 +18,6 @@
                         <h4 class="title">{{ $product->name }}</h4>
                         <h5 class="no-margin">{{ $product->price }} تومان</h5>
                     </div>
-                    <p class="desc">{{ $product->description }}</p>
                 </div>
             </div>
         @endforeach

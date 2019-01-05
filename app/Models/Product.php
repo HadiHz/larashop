@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Product extends Model
 {
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
 
     public function orders()

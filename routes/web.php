@@ -59,6 +59,7 @@ Route::group(['prefix' => 'admin' , 'namespace' => 'Admin' , 'middleware' => 'ad
     //sync
     Route::get('/sync' , 'SyncController@index')->name('admin.sync.index');
     Route::post('/syncProducts' , 'SyncController@syncProducts')->name('admin.syncProducts');
+    Route::post('/syncOrders' , 'SyncController@syncOrders')->name('admin.syncOrders');
 
 
     //payments
@@ -78,6 +79,8 @@ Route::group(['namespace' => 'Frontend'] , function (){
     Route::get('/' , 'HomeController@index')->name('home');
 
     Route::get('/search' , 'HomeController@search')->name('search');
+    Route::get('/about-us' , 'HomeController@aboutUs')->name('aboutUs');
+    Route::get('/contact-us' , 'HomeController@contactUs')->name('contactUs');
 
 
     Route::get('/login' , 'UserController@login')->name('login');

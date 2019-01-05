@@ -18,12 +18,11 @@
                                 <a href="{{ route('home') }}" class="dropdown-toggle"> خانه </a>
                             </li>
 
-
                             @include('frontend.category.list' ,['items' => $categories['root'] ])
 
 
-                            <li><a href="about-us.html">درباره ما</a></li>
-                            <li><a href="contact.html">تماس با ما</a></li>
+                            <li><a href="{{ route('aboutUs') }}">درباره ما</a></li>
+                            <li><a href="{{ route('contactUs') }}">تماس با ما</a></li>
                         </ul>
 
                         <!--  ==========  -->

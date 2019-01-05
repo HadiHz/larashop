@@ -47,4 +47,19 @@ class HomeController extends Controller
         $pageTitle = 'جستجو ی محصولات';
         return view('frontend.home.search' , compact('products','categories','maxPrice','search' , 'pageTitle'));
     }
+
+
+    public function aboutUs()
+    {
+        $pageTitle = "درباره ما";
+        return view('frontend.home.aboutUs' , compact('pageTitle'));
+    }
+
+    public function contactUs()
+    {
+        $pageTitle = "ارتباط ما";
+        return view('frontend.home.contactUs',compact('pageTitle'));
+    }
+
+
 }

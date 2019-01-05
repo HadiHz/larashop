@@ -126,9 +126,6 @@
                     ورود
                 </button>
             </form>
-            <p class="center-align push-down-0">
-                <a href="#" data-dismiss="modal">رمز عبورتان را فراموش کرده اید؟</a>
-            </p>
         </div>
     </div>
 

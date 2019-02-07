@@ -36,6 +36,8 @@ Route::group(['prefix' => 'admin' , 'namespace' => 'Admin' , 'middleware' => 'ad
     Route::get('/products/edit/{id}' , 'ProductController@edit')->name('admin.product.edit');
     Route::post('/products/edit/{id}' , 'ProductController@update')->name('admin.product.edit');
     Route::get('/products/delete/{id}' , 'ProductController@delete')->name('admin.product.delete');
+    Route::get('/products/addToSlider/{id}' , 'ProductController@addToSlider')->name('admin.slider.add');
+    Route::get('/products/deleteFromSlider/{id}' , 'ProductController@deleteFromSlider')->name('admin.slider.delete');
 
 
     //categories routes
@@ -69,6 +71,14 @@ Route::group(['prefix' => 'admin' , 'namespace' => 'Admin' , 'middleware' => 'ad
     Route::get('/orders' , 'OrderController@index')->name('admin.orders.list');
     Route::get('/orders/{id}' , 'OrderController@details')->name('admin.orders.details');
     Route::post('/orders/{id}' , 'OrderController@updateStatus')->name('admin.orders.details');
+
+
+    //setting
+    Route::get('/setting/{id?}' , 'SettingController@index')->name('admin.setting');
+    Route::post('/setting/{id?}' , 'SettingController@store')->name('admin.setting');
+    Route::get('/settinggateway' , 'SettingController@gatewaySetting')->name('admin.setting.gateway');
+    Route::post('/settinggateway' , 'SettingController@updateGatewaySettings')->name('admin.setting.gateway');
+
 
 
 

@@ -64,6 +64,16 @@
                     <li><a href="{{ route('admin.sync.index') }}">sync</a></li>
                 </ul>
             </li>
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">تنظیمات سایت
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ route('admin.setting' , 1) }}">تنظیمات کلی</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{{ route('admin.setting.gateway') }}">تنظیمات درگاه بانک</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </nav>

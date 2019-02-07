@@ -45,9 +45,12 @@
                             <span class="clickable add-one icon-plus-sign-alt"></span>
                             <span class="clickable remove-one icon-minus-sign-alt"></span>
                         </div>
-                        &nbsp;
-                        <a data-pid="{{ $product->id }}" class="btn btn-danger btn_add_to_cart"><i
-                                    class="fa fa-shopping-cart"></i> اضافه به سبد خرید</a>
+                        &nbsp;@if( $product->quantity_in_warehouse > 0 )
+                            <a data-pid="{{ $product->id }}" class="btn btn-danger btn_add_to_cart"><i
+                                        class="fa fa-shopping-cart"></i> اضافه به سبد خرید</a>
+                        @else
+                            <a class="btn btn-danger">ناموجود</a>
+                        @endif
                     </div>
                     <hr/>
 

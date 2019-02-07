@@ -4,7 +4,7 @@ namespace App\Services\Payment;
 
 
 use App\Models\Payment;
-use App\Utility\Order;
+use App\Models\Setting;use App\Utility\Order;
 use nusoap_client;
 
 
@@ -17,9 +17,21 @@ class Mellat {
 
 	public function __construct() {
 
-		$this->terminalID = config( 'gateways.mellat.terminalID' );
-		$this->userName   = config( 'gateways.mellat.userName' );
-		$this->password   = config( 'gateways.mellat.password' );
+	    $settingMellat = Setting::find(1);
+
+	    if ($settingMellat){
+            $this->terminalID = $settingMellat->mellatTerminalID;
+		    $this->userName   = $settingMellat->mellatUsername;
+		    $this->password   = $settingMellat->mellatPassword;
+	    }else{
+	        $this->terminalID = config( 'gateways.mellat.terminalID' );
+		    $this->userName   = config( 'gateways.mellat.userName' );
+		    $this->password   = config( 'gateways.mellat.password' );
+	    }
+
+//		$this->terminalID = config( 'gateways.mellat.terminalID' );
+//		$this->userName   = config( 'gateways.mellat.userName' );
+//		$this->password   = config( 'gateways.mellat.password' );
 //		$this->client     = new nusoap_client( 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl', TRUE );
 		$this->client     = new nusoap_client( 'http://banktest.ir/gateway/mellat/ws?wsdl', TRUE );
 		$this->namespace  = 'http://interfaces.core.sw.bps.com/';

@@ -25,18 +25,6 @@ class SyncController extends Controller
     {
 
 
-//        $oldProduct = Product::find(1);
-//        $t = $oldProduct->categories()->sync([1]);
-//        dd($t);
-
-//        $t = DB::table('categorizables')->insert([
-//            'category_id' => 100,
-//            'categorizable_id' => 11,
-//            'categorizable_type' => 'App\Models\Product',
-//        ]);
-
-//        dd($t);
-
         $valData = $request->validate([
             'email' => 'required|email',
             'password' => 'required',

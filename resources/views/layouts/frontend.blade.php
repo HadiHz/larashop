@@ -62,6 +62,9 @@
     <div class="boxed-area blocks-spacer">
         <div class="container">
 
+
+            @yield('slider')
+
             <!--  ==========  -->
             <!--  = Title =  -->
             <!--  ==========  -->

@@ -3,21 +3,21 @@
 @section('steps')
     <div class="checkout-steps">
         <div class="clearfix">
-            <div class="step done">
-                <div class="step-badge"><i class="icon-ok"></i></div>
-                <a href="checkout-step-1.html">سبد خريد</a>
-            </div>
-            <div class="step done">
-                <div class="step-badge"><i class="icon-ok"></i></div>
-                <a href="checkout-step-2.html">آدرس ارسال</a>
-            </div>
-            <div class="step done">
-                <div class="step-badge"><i class="icon-ok"></i></div>
-                <a href="checkout-step-3.html">شيوه پرداخت</a>
-            </div>
             <div class="step active">
                 <div class="step-badge">4</div>
                 تاييد و پرداخت
+            </div>
+            <div class="step done">
+                <div class="step-badge"><i class="icon-ok"></i></div>
+                <a href="{{ route('basket.howToPay') }}">شيوه پرداخت</a>
+            </div>
+            <div class="step done">
+                <div class="step-badge"><i class="icon-ok"></i></div>
+                <a href="{{ route('basket.checkAddress') }}">آدرس ارسال</a>
+            </div>
+            <div class="step done">
+                <div class="step-badge"><i class="icon-ok"></i></div>
+                <a href="{{ route('basket.review') }}">سبد خريد</a>
             </div>
         </div>
     </div>

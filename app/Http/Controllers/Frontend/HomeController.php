@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use phpDocumentor\Reflection\DocBlock;
@@ -18,7 +19,12 @@ class HomeController extends Controller
 //        session_destroy();
 //unset($_SESSION);
         $products = Product::filter($request)->get();
-        return view('frontend.home.index' , compact('products'));
+        $sliderProductsIds = Slider::all()->pluck('product_id')->toArray();
+        $sliderProducts = [];
+        foreach ($sliderProductsIds as $id){
+            $sliderProducts[] = Product::find($id);
+        }
+        return view('frontend.home.index' , compact('products' , 'sliderProducts'));
     }
 
     public function search(Request $request)
@@ -57,7 +63,7 @@ class HomeController extends Controller
 
     public function contactUs()
     {
-        $pageTitle = "ارتباط ما";
+        $pageTitle = "ارتباط با ما";
         return view('frontend.home.contactUs',compact('pageTitle'));
     }
 

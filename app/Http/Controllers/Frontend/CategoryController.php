@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,6 +17,12 @@ class CategoryController extends Controller
 
         $pageTitle = 'محصولات در دسته بندی ' . $category->name;
 
-        return view('frontend.home.index' , compact('products' , 'pageTitle'));
+        $sliderProductsIds = Slider::all()->pluck('product_id')->toArray();
+        $sliderProducts = [];
+        foreach ($sliderProductsIds as $id){
+            $sliderProducts[] = Product::find($id);
+        };
+
+        return view('frontend.home.index' , compact('products' , 'pageTitle' , 'sliderProducts'));
     }
 }

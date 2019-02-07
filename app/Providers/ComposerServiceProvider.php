@@ -17,6 +17,21 @@ class ComposerServiceProvider extends ServiceProvider
             'layouts.frontend',
             'App\Http\ViewComposers\CategoryComposer'
         );
+
+        view()->composer(
+            'layouts.frontend',
+            'App\Http\ViewComposers\SettingComposer'
+        );
+
+        view()->composer(
+            'frontend.home.aboutUs',
+            'App\Http\ViewComposers\SettingComposer'
+        );
+
+        view()->composer(
+            'frontend.home.contactUs',
+            'App\Http\ViewComposers\SettingComposer'
+        );
     }
 
     /**

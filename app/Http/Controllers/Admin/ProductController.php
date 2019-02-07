@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
@@ -13,7 +14,8 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::orderBy('updated_at', 'DESC')->paginate(20);
-        return view('admin.product.list', compact('products'))->with('panel_title', 'لیست محصول ها');
+        $sliders = Slider::all()->pluck('product_id')->toArray();
+        return view('admin.product.list', compact('products' , 'sliders'))->with('panel_title', 'لیست محصول ها');
     }
 
     public function create()
@@ -114,4 +116,22 @@ class ProductController extends Controller
             return redirect()->route('admin.product.list')->with('success', 'محصول مورد نظر با موفقیت حذف شد.');
         }
     }
+
+    public function addToSlider($id)
+    {
+        Slider::create([
+            'product_id' => $id
+        ]);
+
+        return back()->with('success' , 'محصول مورد نظر در اسلایدر قرار گرفت.');
+    }
+
+
+    public function deleteFromSlider($id)
+    {
+        Slider::destroy($id);
+
+        return back()->with('success' , 'محصول مورد نظر از اسلایدر حذف شد.');
+    }
+    
 }

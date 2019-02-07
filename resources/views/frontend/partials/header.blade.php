@@ -7,9 +7,9 @@
             <!--  ==========  -->
             <div class="span7">
                 <a class="brand" href="{{ route('home') }}">
-                    <img src="/images/logo.png" alt="Webmarket Logo" width="48" height="48"/>
-                    <span class="pacifico">Webmarket</span>
-                    <span class="tagline">فروشگاه</span>
+                    <img src="{{ $setting->logoImagePath }}" alt="Webmarket Logo" width="48" height="48"/>
+                    <span class="pacifico">{{ $setting->name }}</span>
+                    <span class="tagline">{{ $setting->slogan }}</span>
                 </a>
             </div>
 
@@ -35,6 +35,9 @@
                                     <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ route('user.dashboard')  }}">پنل کاربری</a></li>
+                                    @if(auth()->user()->role == \App\User::ADMIN)
+                                        <li><a href="{{ route('admin.product.list')  }}">پنل ادمین</a></li>
+                                        @endif
                                     <li><a href="{{ route('logout')  }}">خروج</a></li>
                                     {{--<li><a href="#">Something else here</a></li>--}}
                                     {{--<li role="separator" class="divider"></li>--}}
